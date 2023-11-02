@@ -94,18 +94,40 @@ public class API {
     }
 
     private void setCategoryFromUser() {
-        System.out.println("Chose a category: ");
-        Scanner scanner = new Scanner(System.in);
-        int input = scanner.nextInt();
-        this.categoryFromUser = input;
+        System.out.println("Choose a category (9 - 32): ");
+        while (true) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                int input = scanner.nextInt();
+                if (input >= 9 && input <= 32) {
+                    this.categoryFromUser = input;
+                    break;
+                } else {
+                    System.out.println("Try again! Category must be between 9 and 32.");
+                }
+            } catch (Exception e) {
+                System.out.println("Try again! Category must be between 9 and 32.");
+            }
+        }
     }
 
     private void setNumberOfQuestions() {
 
         System.out.println("How many questions do you want to have 10 - 50 ?");
-        Scanner scanner = new Scanner(System.in);
-        int input = scanner.nextInt();
-        this.numberOfQuestions = input;
+        while (true) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                int input = scanner.nextInt();
+                if (input >= 10 && input <= 50) {
+                    this.numberOfQuestions = input;
+                    break;
+                } else {
+                    System.out.println("Try again!");
+                }
+            } catch (Exception e) {
+                System.out.println("Try again!");
+            }
+        }
     }
 
     private String linkFormatter (int category, int numberOfQuestions){
