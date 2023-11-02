@@ -18,7 +18,7 @@ public class Questions {
     private List<String> incorrect_answers;
 
 
-    public void printQuestion (){
+    public void printQuestion() {
 
         System.out.println(getQuestion() + "?");
         List<String> alternatives = new ArrayList<>(getIncorrect_answers());
@@ -34,7 +34,8 @@ public class Questions {
         checkAnswer(correctAnswer);
 
     }
-    private void checkAnswer (int correctAnswer){
+
+    private void checkAnswer(int correctAnswer) {
 
         Scanner scan = new Scanner(System.in);
         int input = scan.nextInt();
