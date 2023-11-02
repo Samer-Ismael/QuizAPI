@@ -3,8 +3,10 @@ package org.example;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
@@ -12,6 +14,7 @@ import java.util.Scanner;
 public class API {
     private int categoryFromUser;
     private int numberOfQuestions;
+    private final ObjectMapper mapper = new ObjectMapper();
 
 
     public API (){
@@ -25,11 +28,8 @@ public class API {
         startAsking(APIlink);
 
     }
-    private void startAsking (String link){
-
+    private String makeHttpRequest(String apiUrl) {
         try {
-            String apiUrl = link;
-
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -37,61 +37,48 @@ public class API {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
             String line;
+
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
             reader.close();
 
-            String jsonResponse = response.toString();
+            connection.disconnect();
+            return response.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-            ObjectMapper mapper = new ObjectMapper();
+    private void startAsking(String apiUrl) {
+        try {
+            String jsonResponse = makeHttpRequest(apiUrl);
+
             TriviaResponse triviaResponse = mapper.readValue(jsonResponse, TriviaResponse.class);
 
             for (Questions question : triviaResponse.getResults()) {
                 question.printQuestion();
             }
-
-            connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void showCategories (){
-
+    private void showCategories() {
         try {
-            String apiUrl = "https://opentdb.com/api_category.php";
+            String jsonResponse = makeHttpRequest("https://opentdb.com/api_category.php");
 
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            String jsonResponse = response.toString();
-
-            ObjectMapper mapper = new ObjectMapper();
             CategoryList categoryList = mapper.readValue(jsonResponse, CategoryList.class);
 
-            List<org.example.Category> categories = categoryList.getCategories();
-
-            for (Category category : categories) {
+            for (Category category : categoryList.getCategories()) {
                 System.out.println(category.getId() + ": " + category.getName());
             }
-
-            connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
 
     private void setCategoryFromUser() {
         System.out.println("Choose a category (9 - 32): ");
