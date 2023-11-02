@@ -18,6 +18,12 @@ public class Questions {
     private List<String> incorrect_answers;
 
 
+    public Questions(String question, String correct_answer, List<String> incorrect_answers) {
+        this.question = question;
+        this.correct_answer = correct_answer;
+        this.incorrect_answers = incorrect_answers;
+    }
+
     public void printQuestion() {
 
         System.out.println(getQuestion() + "?");
