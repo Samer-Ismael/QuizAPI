@@ -14,8 +14,7 @@ public class API {
     private int numberOfQuestions;
 
 
-    public API (String link){
-
+    public API (){
 
         showCategories();
         setCategoryFromUser();
