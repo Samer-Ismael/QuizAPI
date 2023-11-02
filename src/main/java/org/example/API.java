@@ -12,6 +12,7 @@ public class API {
     private final ObjectMapper mapper = new ObjectMapper();
     private int categoryFromUser;
     private int numberOfQuestions;
+    private String difficulty;
 
 
     public API() {
@@ -19,8 +20,9 @@ public class API {
         showCategories();
         setCategoryFromUser();
         setNumberOfQuestions();
+        setDifficulty();
 
-        String APIlink = linkFormatter(categoryFromUser, numberOfQuestions);
+        String APIlink = linkFormatter(categoryFromUser, numberOfQuestions, difficulty);
 
         startAsking(APIlink);
 
@@ -114,9 +116,31 @@ public class API {
         }
     }
 
-    private String linkFormatter(int category, int numberOfQuestions) {
+    private void setDifficulty (){
+        System.out.println("Chose difficulty");
+        System.out.println("1> Easy\n2> Medium\n3> Hard");
+        while (true) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                int input = scanner.nextInt();
+                if (input >= 1 && input <= 3) {
 
-        String link = "https://opentdb.com/api.php?amount=" + numberOfQuestions + "&category=" + category;
+                    if (input == 1) this.difficulty = "easy";
+                    if (input == 2) this.difficulty = "medium";
+                    if (input == 3) this.difficulty = "hard";
+                    break;
+                } else {
+                    System.out.println("Try again!");
+                }
+            } catch (Exception e) {
+                System.out.println("Try again!");
+            }
+        }
+
+    }
+    private String linkFormatter(int category, int numberOfQuestions, String difficulty) {
+
+        String link = "https://opentdb.com/api.php?amount=" + numberOfQuestions + "&category=" + category + "&difficulty=" + difficulty;
         return link;
     }
 }
