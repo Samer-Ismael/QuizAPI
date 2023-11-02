@@ -57,7 +57,7 @@ public class API {
         }
     }
 
-    public void showCategories (){
+    private void showCategories (){
 
         try {
             String apiUrl = "https://opentdb.com/api_category.php";
@@ -93,14 +93,14 @@ public class API {
 
     }
 
-    public void setCategoryFromUser() {
+    private void setCategoryFromUser() {
         System.out.println("Chose a category: ");
         Scanner scanner = new Scanner(System.in);
         int input = scanner.nextInt();
         this.categoryFromUser = input;
     }
 
-    public void setNumberOfQuestions() {
+    private void setNumberOfQuestions() {
 
         System.out.println("How many questions do you want to have 10 - 50 ?");
         Scanner scanner = new Scanner(System.in);
